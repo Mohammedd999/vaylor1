@@ -371,7 +371,7 @@
             line-height: 1.3;
         }
 
-        /* ===== الأقسام الأربعة - بنفس شكل المشاريع بالضبط ===== */
+        /* ===== الأقسام الأربعة ===== */
         .sections-list {
             display: flex;
             flex-direction: column;
@@ -511,6 +511,7 @@
             transform: scale(0.97);
         }
 
+        /* ====== حجم الصورة في بطاقة المشروع - كبير ====== */
         .full-modal .project-card .card-img {
             width: 100%;
             height: 200px;
@@ -810,6 +811,96 @@
 
         .footer strong { color: #8a5a4a; }
 
+        /* ===== صفحة المشاهدة (عرض كامل بدون إطار) ===== */
+        .view-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1200;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .view-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .view-modal .view-close {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 10;
+            transition: 0.3s;
+        }
+
+        .view-modal .view-close:active {
+            transform: scale(0.9);
+            background: rgba(255,255,255,0.25);
+        }
+
+        .view-modal .view-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .view-modal .view-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .view-modal .view-content video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .view-modal .view-content audio {
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .view-modal .view-title {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0 20px;
+            font-family: 'Cairo', sans-serif;
+        }
+
         /* ===== صفحة التفاصيل ===== */
         .detail-modal {
             display: none;
@@ -852,7 +943,7 @@
 
         .detail-modal .detail-media {
             width: 100%;
-            height: 300px;
+            height: 200px;
             border-radius: 16px;
             background: #e8ddd6;
             display: flex;
@@ -941,14 +1032,18 @@
             .service-card .icon-wrap i { font-size: 0.9rem; }
             .section-card { padding: 12px; }
             .section-card .section-img { width: 52px; height: 52px; font-size: 1.3rem; }
-            .full-modal .project-card .card-img { height: 150px; }
-            .detail-modal .detail-media { height: 200px; }
+            
+            .full-modal .project-card .card-img { height: 160px; }
+            .detail-modal .detail-media { height: 160px; }
         }
 
         @media (max-width: 340px) {
             .services-grid { grid-template-columns: 1fr; }
             .team-grid { grid-template-columns: 1fr; }
             .full-modal .project-card .card-actions { flex-direction: column; }
+            
+            .full-modal .project-card .card-img { height: 140px; }
+            .detail-modal .detail-media { height: 130px; }
         }
 
         .fade-in {
@@ -1266,13 +1361,20 @@
     </main>
 </div>
 
-<!-- ===== الصفحة الكاملة للمشاريع ===== -->
+<!-- ===== المودال لعرض المشاريع ===== -->
 <div class="full-modal" id="fullModal">
     <div class="modal-header">
         <h2 id="fullModalTitle">الإعلانات</h2>
         <button class="close-full" onclick="closeFullModal()"><i class="fas fa-times"></i></button>
     </div>
     <div class="projects-list" id="fullModalList"></div>
+</div>
+
+<!-- ===== صفحة المشاهدة (عرض كامل بدون إطار) ===== -->
+<div class="view-modal" id="viewModal">
+    <button class="view-close" onclick="closeView()"><i class="fas fa-times"></i></button>
+    <div class="view-content" id="viewContent"></div>
+    <div class="view-title" id="viewTitle"></div>
 </div>
 
 <!-- ===== صفحة التفاصيل ===== -->
@@ -1306,7 +1408,7 @@
     closeSidebar.addEventListener('click', closeSidebarFn);
     overlay.addEventListener('click', closeSidebarFn);
 
-    // ===== بيانات المشاريع حسب طلبك =====
+    // ===== بيانات المشاريع =====
     const sectionData = {
         ad: {
             title: 'الإعلانات',
@@ -1366,17 +1468,17 @@
                     </audio>
                 </div>`;
             } else {
-                mediaHtml = `<img src="${p.file}" alt="${p.title}" style="width:100%;height:100%;object-fit:contain;" onclick="openDetail(${p.id})" onerror="this.src='https://placehold.co/400x300/e8ddd6/8a5a4a?text=${p.title}'"/>`;
+                mediaHtml = `<img src="${p.file}" alt="${p.title}" style="width:100%;height:100%;object-fit:contain;" onclick="openView(${p.id})" onerror="this.src='https://placehold.co/400x300/e8ddd6/8a5a4a?text=${p.title}'"/>`;
             }
 
             card.innerHTML = `
-                <div class="card-img" onclick="${p.type === 'video' || p.type === 'audio' ? 'openDetail(' + p.id + ')' : 'openDetail(' + p.id + ')'}">
+                <div class="card-img" onclick="${p.type === 'video' || p.type === 'audio' ? 'openView(' + p.id + ')' : 'openView(' + p.id + ')'}">
                     ${mediaHtml}
                 </div>
                 <h5>${p.title}</h5>
                 <p>${p.desc}</p>
                 <div class="card-actions">
-                    <button class="btn-action primary" onclick="openDetail(${p.id})"><i class="fas fa-eye"></i> مشاهدة</button>
+                    <button class="btn-action primary" onclick="openView(${p.id})"><i class="fas fa-eye"></i> مشاهدة</button>
                     <button class="btn-action" onclick="openDetail(${p.id})"><i class="fas fa-info-circle"></i> تفاصيل</button>
                 </div>
             `;
@@ -1396,7 +1498,56 @@
         audios.forEach(a => a.pause());
     }
 
-    // ===== التفاصيل =====
+    // ================================================================
+    // ====== مشاهدة (عرض كامل بدون إطار) ======
+    // ================================================================
+    function openView(id) {
+        const project = fullData[id];
+        if (!project) return;
+
+        const modal = document.getElementById('viewModal');
+        const content = document.getElementById('viewContent');
+        const title = document.getElementById('viewTitle');
+
+        title.textContent = project.title;
+
+        let mediaHtml = '';
+        if (project.type === 'video') {
+            mediaHtml = `<video controls autoplay style="width:100%; height:100%; object-fit:contain;">
+                <source src="${project.file}" type="video/mp4">
+                متصفحك لا يدعم تشغيل الفيديو
+            </video>`;
+        } else if (project.type === 'audio') {
+            mediaHtml = `<div style="display:flex;flex-direction:column;align-items:center;gap:20px;color:#fff;">
+                <i class="fas fa-headphones" style="font-size:5rem;color:#fff;"></i>
+                <audio controls style="width:80%;">
+                    <source src="${project.file}" type="audio/mp3">
+                    متصفحك لا يدعم تشغيل الصوت
+                </audio>
+            </div>`;
+        } else {
+            mediaHtml = `<img src="${project.file}" alt="${project.title}" style="width:100%; height:100%; object-fit:contain;" onerror="this.src='https://placehold.co/800x600/333/fff?text=${project.title}'"/>`;
+        }
+
+        content.innerHTML = mediaHtml;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeView() {
+        const modal = document.getElementById('viewModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        const video = document.querySelector('#viewContent video');
+        if (video) video.pause();
+        const audio = document.querySelector('#viewContent audio');
+        if (audio) audio.pause();
+        document.getElementById('viewContent').innerHTML = '';
+    }
+
+    // ================================================================
+    // ====== التفاصيل ======
+    // ================================================================
     const fullData = {
         1: { title: 'إعلان ساعة رولكس', desc: 'إعلان تجاري لساعة رولكس الفاخرة بتصميم عصري.', type: 'image', file: 'ساعه.jpg', size: '1920x1080', category: 'إعلان' },
         2: { title: 'إعلان كافيه', desc: 'إعلان فيديو احترافي لمقهى عصري.', type: 'video', file: 'كافيه.mp4', size: '4K', duration: '3:45', category: 'فيديو' },
@@ -1500,6 +1651,8 @@
     window.submitRequest = submitRequest;
     window.openFullModal = openFullModal;
     window.closeFullModal = closeFullModal;
+    window.openView = openView;
+    window.closeView = closeView;
     window.openDetail = openDetail;
     window.closeDetail = closeDetail;
     window.sendWhatsAppDetail = sendWhatsAppDetail;
@@ -1510,6 +1663,10 @@
 
     document.getElementById('fullModal').addEventListener('click', function(e) {
         if (e.target === this) closeFullModal();
+    });
+
+    document.getElementById('viewModal').addEventListener('click', function(e) {
+        if (e.target === this) closeView();
     });
 
     document.getElementById('detailModal').addEventListener('click', function(e) {
