@@ -1,1568 +1,1545 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
     <title>VAYLOR</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link rel="icon" href="lol.svg" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Cairo", sans-serif;
-        background: #faf5f0;
-        color: #2a1f1a;
-        scroll-behavior: smooth;
-        max-width: 480px;
-        margin: 0 auto;
-        overflow-x: hidden;
-      }
-
-      .top-header {
-        background: rgba(255, 250, 245, 0.95);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        padding: 10px 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #e8d5cc;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-
-      .top-header .logo-mini {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .top-header .logo-mini .circle-mini {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 2px solid #8a5a4a;
-        overflow: hidden;
-        flex-shrink: 0;
-        background: #faf5f0;
-      }
-
-      .top-header .logo-mini .circle-mini img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .top-header .logo-mini h1 {
-        font-size: 1rem;
-        font-weight: 800;
-        color: #8a5a4a;
-        letter-spacing: 0.5px;
-      }
-
-      .top-header .logo-mini span {
-        font-size: 0.4rem;
-        color: #a08070;
-        display: block;
-        letter-spacing: 1.5px;
-        font-weight: 600;
-        margin-top: -2px;
-      }
-
-      .top-header .menu-toggle {
-        background: none;
-        border: none;
-        font-size: 1.3rem;
-        color: #8a5a4a;
-        cursor: pointer;
-        padding: 4px 6px;
-      }
-
-      .sidebar-overlay {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.35);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        z-index: 200;
-        transition: right 0.35s ease;
-      }
-
-      .sidebar-overlay.open {
-        right: 0;
-      }
-
-      .sidebar {
-        position: fixed;
-        top: 0;
-        right: -85%;
-        width: 85%;
-        max-width: 320px;
-        height: 100%;
-        background: #faf5f0;
-        padding: 25px 18px 25px;
-        box-shadow: -4px 0 40px rgba(0, 0, 0, 0.08);
-        z-index: 300;
-        transition: right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        border-left: 1px solid #e8d5cc;
-      }
-
-      .sidebar.open {
-        right: 0;
-      }
-
-      .sidebar .close-btn {
-        align-self: flex-start;
-        background: none;
-        border: none;
-        font-size: 1.4rem;
-        color: #8a5a4a;
-        cursor: pointer;
-        margin-bottom: 8px;
-      }
-
-      .sidebar .logo-area {
-        text-align: center;
-        margin-bottom: 16px;
-        padding-bottom: 14px;
-        border-bottom: 2px solid #e8d5cc;
-      }
-
-      .sidebar .logo-area .circle-logo {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        border: 3px solid #8a5a4a;
-        margin: 0 auto 8px;
-        overflow: hidden;
-        background: #faf5f0;
-        box-shadow: 0 8px 30px rgba(138, 90, 74, 0.1);
-      }
-
-      .sidebar .logo-area .circle-logo img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .sidebar .logo-area h2 {
-        font-size: 1.2rem;
-        font-weight: 800;
-        color: #8a5a4a;
-      }
-
-      .sidebar .logo-area span {
-        color: #a08070;
-        font-size: 0.6rem;
-        letter-spacing: 2px;
-        font-weight: 600;
-      }
-
-      .sidebar .social-top {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 16px;
-        padding-bottom: 14px;
-        border-bottom: 1px solid #e8d5cc;
-      }
-
-      .sidebar .social-top a {
-        color: #a08070;
-        font-size: 1.1rem;
-        width: 34px;
-        height: 34px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        border: 1px solid #e8d5cc;
-        transition: 0.25s;
-        text-decoration: none;
-      }
-
-      .sidebar .social-top a:hover {
-        color: #8a5a4a;
-        border-color: #8a5a4a;
-        background: #f5ede8;
-      }
-
-      .sidebar .nav-links {
-        list-style: none;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-      }
-
-      .sidebar .nav-links li {
-        margin-bottom: 0;
-      }
-
-      .sidebar .nav-links a {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 12px;
-        border-radius: 12px;
-        text-decoration: none;
-        color: #4d3a32;
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition: 0.25s;
-        border: 1px solid transparent;
-      }
-
-      .sidebar .nav-links a i {
-        width: 20px;
-        color: #b09080;
-        font-size: 0.95rem;
-      }
-
-      .sidebar .nav-links a:hover {
-        background: #f5ede8;
-        border-color: #e8d5cc;
-      }
-
-      .sidebar .nav-links .active a {
-        background: #f5ede8;
-        border-color: #8a5a4a;
-        color: #8a5a4a;
-      }
-
-      .sidebar .nav-links .active a i {
-        color: #8a5a4a;
-      }
-
-      .main-content {
-        padding: 12px 12px 25px;
-        background: #faf5f0;
-      }
-
-      .hero-section {
-        text-align: center;
-        padding: 12px 0 16px;
-      }
-
-      .hero-section .big-logo {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        border: 4px solid #8a5a4a;
-        margin: 0 auto 10px;
-        overflow: hidden;
-        box-shadow: 0 8px 30px rgba(138, 90, 74, 0.12);
-      }
-
-      .hero-section .big-logo img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .hero-section h1 {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #8a5a4a;
-      }
-
-      .hero-section .sub-title {
-        color: #7d6a60;
-        font-size: 0.75rem;
-        margin-bottom: 2px;
-      }
-
-      .hero-section .team-name {
-        color: #a08070;
-        font-size: 0.7rem;
-        font-weight: 600;
-        margin-bottom: 10px;
-      }
-
-      .hero-section .hero-desc {
-        color: #5d4a40;
-        font-size: 0.8rem;
-        max-width: 350px;
-        margin: 0 auto 12px;
-        line-height: 1.6;
-        padding: 0 4px;
-      }
-
-      .hero-section .btn-start {
-        background: linear-gradient(135deg, #8a5a4a, #a67a6a);
-        border: none;
-        color: #fff;
-        font-weight: 700;
-        font-size: 0.85rem;
-        padding: 8px 24px;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 16px rgba(138, 90, 74, 0.2);
-        font-family: "Cairo", sans-serif;
-      }
-
-      .hero-section .btn-start:active {
-        transform: scale(0.97);
-      }
-
-      .section-title {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #2a1f1a;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .section-title i {
-        color: #8a5a4a;
-        font-size: 1rem;
-      }
-
-      .services-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        margin-bottom: 22px;
-      }
-
-      .service-card {
-        background: #ffffff;
-        border-radius: 12px;
-        padding: 12px 8px;
-        text-align: center;
-        transition: 0.3s;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-      }
-
-      .service-card:active {
-        transform: scale(0.97);
-      }
-
-      .service-card .icon-wrap {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background: #f7f0ea;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 6px;
-      }
-
-      .service-card .icon-wrap i {
-        font-size: 1rem;
-        color: #8a5a4a;
-      }
-
-      .service-card h4 {
-        font-size: 0.7rem;
-        color: #2a1f1a;
-        margin-bottom: 1px;
-      }
-
-      .service-card p {
-        font-size: 0.6rem;
-        color: #7d6a60;
-        line-height: 1.3;
-      }
-
-      .projects-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 22px;
-      }
-
-      .project-item {
-        background: #ffffff;
-        border-radius: 12px;
-        padding: 12px 14px;
-        transition: 0.3s;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-        display: flex;
-        flex-direction: column;
-      }
-
-      .project-item:active {
-        transform: scale(0.98);
-      }
-
-      .project-item .project-header {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 6px;
-      }
-
-      .project-item .project-header i {
-        font-size: 1rem;
-        color: #8a5a4a;
-        width: 22px;
-        text-align: center;
-      }
-
-      .project-item .project-header .info h4 {
-        font-size: 0.8rem;
-        color: #2a1f1a;
-      }
-      .project-item .project-header .info p {
-        font-size: 0.6rem;
-        color: #7d6a60;
-      }
-
-      .project-item .project-preview {
-        background: #f0e8e2;
-        border-radius: 10px;
-        height: 90px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 8px;
-        font-size: 1.8rem;
-        color: #8a5a4a;
-        overflow: hidden;
-        cursor: pointer;
-      }
-
-      .project-item .project-preview img,
-      .project-item .project-preview video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .project-item .project-actions {
-        display: flex;
-        gap: 5px;
-      }
-
-      .project-item .project-actions .btn-action {
-        padding: 4px 10px;
-        border-radius: 30px;
-        font-size: 0.6rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-        font-family: "Cairo", sans-serif;
-        border: 1px solid #e8d5cc;
-        background: #faf5f0;
-        color: #4d3a32;
-        display: inline-flex;
-        align-items: center;
-        gap: 3px;
-        flex: 1;
-        justify-content: center;
-      }
-
-      .project-item .project-actions .btn-action:active {
-        transform: scale(0.95);
-      }
-
-      .project-item .project-actions .btn-action.primary {
-        background: #8a5a4a;
-        color: #fff;
-        border-color: #8a5a4a;
-      }
-
-      /* ===== تقييمات العملاء - تصميم مثل Google Reviews ===== */
-      .testimonials-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 22px;
-      }
-
-      .testimonial-item {
-        background: #ffffff;
-        border-radius: 14px;
-        padding: 14px 16px;
-        transition: 0.3s;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-        border: 1px solid #f0e8e2;
-      }
-
-      .testimonial-item:active {
-        transform: scale(0.98);
-      }
-
-      .testimonial-item .testimonial-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 6px;
-      }
-
-      .testimonial-item .stars {
-        color: #f5a623;
-        font-size: 0.85rem;
-        letter-spacing: 2px;
-      }
-
-      .testimonial-item .client-name {
-        font-weight: 700;
-        color: #8a5a4a;
-        font-size: 0.75rem;
-      }
-
-      .testimonial-item .testimonial-date {
-        font-size: 0.55rem;
-        color: #a09080;
-      }
-
-      .testimonial-item p {
-        font-size: 0.8rem;
-        color: #3d322c;
-        line-height: 1.6;
-        font-style: italic;
-        margin-top: 4px;
-        padding-right: 4px;
-      }
-
-      .form-section {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 14px 14px;
-        margin-bottom: 22px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-      }
-
-      .form-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
-
-      .form-group label {
-        display: block;
-        font-weight: 600;
-        font-size: 0.7rem;
-        color: #4d3a32;
-        margin-bottom: 2px;
-      }
-
-      .form-group label i {
-        color: #8a5a4a;
-        margin-left: 4px;
-      }
-
-      .form-group input,
-      .form-group select,
-      .form-group textarea {
-        width: 100%;
-        padding: 6px 10px;
-        background: #faf5f0;
-        border: 1px solid #e8d5cc;
-        border-radius: 8px;
-        font-family: "Cairo", sans-serif;
-        font-size: 0.8rem;
-        color: #2a1f1a;
-        transition: 0.25s;
-      }
-
-      .form-group input:focus,
-      .form-group select:focus,
-      .form-group textarea:focus {
-        outline: none;
-        border-color: #8a5a4a;
-        box-shadow: 0 0 0 3px rgba(138, 90, 74, 0.05);
-      }
-
-      .form-group textarea {
-        min-height: 60px;
-        resize: vertical;
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, #8a5a4a, #a67a6a);
-        border: none;
-        color: #fff;
-        font-weight: 700;
-        font-size: 0.8rem;
-        padding: 8px 16px;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        font-family: "Cairo", sans-serif;
-        width: 100%;
-        justify-content: center;
-        box-shadow: 0 4px 12px rgba(138, 90, 74, 0.15);
-      }
-
-      .btn-primary:active {
-        transform: scale(0.97);
-      }
-
-      .team-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        margin-bottom: 16px;
-      }
-
-      .team-member {
-        background: #ffffff;
-        text-align: center;
-        padding: 12px 6px 10px;
-        border-radius: 14px;
-        transition: 0.3s;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-      }
-
-      .team-member:active {
-        transform: scale(0.97);
-      }
-
-      .team-member .avatar {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background: #f7f0ea;
-        margin: 0 auto 5px;
-        overflow: hidden;
-        border: 2px solid #e8d5cc;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .team-member .avatar img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .team-member .avatar i {
-        font-size: 1.3rem;
-        color: #8a5a4a;
-      }
-
-      .team-member h5 {
-        font-size: 0.7rem;
-        color: #2a1f1a;
-        margin-bottom: 1px;
-      }
-
-      .team-member p {
-        font-size: 0.55rem;
-        color: #7d6a60;
-      }
-
-      .social-bottom {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        padding: 12px 0 4px;
-        border-top: 1px solid #e8d5cc;
-        margin-top: 6px;
-      }
-
-      .social-bottom a {
-        color: #a08070;
-        font-size: 1.2rem;
-        transition: 0.3s;
-        text-decoration: none;
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        border: 1px solid #e8d5cc;
-        background: #ffffff;
-      }
-
-      .social-bottom a:active {
-        transform: scale(0.9);
-      }
-
-      .footer {
-        text-align: center;
-        padding-top: 6px;
-        color: #7d6a60;
-        font-size: 0.65rem;
-      }
-
-      .footer strong {
-        color: #8a5a4a;
-      }
-
-      .modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        z-index: 500;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-      }
-
-      .modal-overlay.active {
-        display: flex;
-      }
-
-      .modal-box {
-        background: #faf5f0;
-        border-radius: 20px;
-        max-width: 380px;
-        width: 100%;
-        padding: 20px 18px;
-        position: relative;
-        animation: modalIn 0.3s ease;
-      }
-
-      @keyframes modalIn {
-        from {
-          opacity: 0;
-          transform: scale(0.92) translateY(16px);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        to {
-          opacity: 1;
-          transform: scale(1) translateY(0);
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #faf5f0;
+            color: #2a1f1a;
+            scroll-behavior: smooth;
+            max-width: 480px;
+            margin: 0 auto;
+            overflow-x: hidden;
         }
-      }
 
-      .modal-box .close-modal {
-        position: absolute;
-        top: 6px;
-        left: 12px;
-        font-size: 1.3rem;
-        color: #8a5a4a;
-        cursor: pointer;
-        background: none;
-        border: none;
-      }
-
-      .modal-box .modal-media {
-        width: 100%;
-        height: 130px;
-        border-radius: 10px;
-        background: #e8ddd6;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2.5rem;
-        color: #8a5a4a;
-        overflow: hidden;
-      }
-
-      .modal-box .modal-media img,
-      .modal-box .modal-media video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .modal-box h3 {
-        font-size: 1rem;
-        color: #8a5a4a;
-        margin-bottom: 2px;
-      }
-
-      .modal-box .modal-meta {
-        font-size: 0.65rem;
-        color: #7d6a60;
-        margin-bottom: 6px;
-      }
-
-      .modal-box .modal-meta span {
-        display: inline-block;
-        margin-left: 6px;
-      }
-
-      .modal-box p {
-        color: #5d4a40;
-        line-height: 1.5;
-        font-size: 0.8rem;
-        white-space: pre-wrap;
-      }
-
-      .modal-box .whatsapp-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        background: #25d366;
-        color: #fff;
-        padding: 6px 16px;
-        border-radius: 50px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.75rem;
-        margin-top: 10px;
-        border: none;
-        cursor: pointer;
-        font-family: "Cairo", sans-serif;
-        width: 100%;
-        justify-content: center;
-      }
-
-      .modal-box .whatsapp-btn:active {
-        transform: scale(0.97);
-      }
-
-      @media (max-width: 380px) {
-        .services-grid {
-          grid-template-columns: 1fr 1fr;
-          gap: 6px;
+        .top-header {
+            background: rgba(255, 250, 245, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e8d5cc;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .team-grid {
-          grid-template-columns: 1fr 1fr;
-          gap: 6px;
+
+        .top-header .logo-mini {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .hero-section h1 {
-          font-size: 1.3rem;
+
+        .top-header .logo-mini .circle-mini {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #8a5a4a;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #faf5f0;
         }
+
+        .top-header .logo-mini .circle-mini img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .top-header .logo-mini h1 {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #8a5a4a;
+            letter-spacing: 0.5px;
+        }
+
+        .top-header .logo-mini span {
+            font-size: 0.4rem;
+            color: #a08070;
+            display: block;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-top: -2px;
+        }
+
+        .top-header .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            color: #8a5a4a;
+            cursor: pointer;
+            padding: 4px 6px;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 200;
+            transition: right 0.35s ease;
+        }
+
+        .sidebar-overlay.open { right: 0; }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -85%;
+            width: 85%;
+            max-width: 320px;
+            height: 100%;
+            background: #faf5f0;
+            padding: 25px 18px 25px;
+            box-shadow: -4px 0 40px rgba(0,0,0,0.08);
+            z-index: 300;
+            transition: right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #e8d5cc;
+        }
+
+        .sidebar.open { right: 0; }
+
+        .sidebar .close-btn {
+            align-self: flex-start;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: #8a5a4a;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .sidebar .logo-area {
+            text-align: center;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid #e8d5cc;
+        }
+
+        .sidebar .logo-area .circle-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #8a5a4a;
+            margin: 0 auto 8px;
+            overflow: hidden;
+            background: #faf5f0;
+            box-shadow: 0 8px 30px rgba(138, 90, 74, 0.1);
+        }
+
+        .sidebar .logo-area .circle-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sidebar .logo-area h2 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #8a5a4a;
+        }
+
+        .sidebar .logo-area span {
+            color: #a08070;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .sidebar .social-top {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e8d5cc;
+        }
+
+        .sidebar .social-top a {
+            color: #a08070;
+            font-size: 1.1rem;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid #e8d5cc;
+            transition: 0.25s;
+            text-decoration: none;
+        }
+
+        .sidebar .social-top a:hover {
+            color: #8a5a4a;
+            border-color: #8a5a4a;
+            background: #f5ede8;
+        }
+
+        .sidebar .nav-links {
+            list-style: none;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .sidebar .nav-links li { margin-bottom: 0; }
+
+        .sidebar .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #4d3a32;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.25s;
+            border: 1px solid transparent;
+        }
+
+        .sidebar .nav-links a i {
+            width: 20px;
+            color: #b09080;
+            font-size: 0.95rem;
+        }
+
+        .sidebar .nav-links a:hover {
+            background: #f5ede8;
+            border-color: #e8d5cc;
+        }
+
+        .sidebar .nav-links .active a {
+            background: #f5ede8;
+            border-color: #8a5a4a;
+            color: #8a5a4a;
+        }
+
+        .sidebar .nav-links .active a i { color: #8a5a4a; }
+
+        .main-content {
+            padding: 12px 12px 25px;
+            background: #faf5f0;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 12px 0 16px;
+        }
+
         .hero-section .big-logo {
-          width: 85px;
-          height: 85px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid #8a5a4a;
+            margin: 0 auto 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(138, 90, 74, 0.12);
         }
-        .service-card {
-          padding: 10px 6px;
-        }
-        .service-card .icon-wrap {
-          width: 32px;
-          height: 32px;
-        }
-        .service-card .icon-wrap i {
-          font-size: 0.9rem;
-        }
-        .project-item .project-preview {
-          height: 70px;
-        }
-        .modal-box {
-          padding: 16px 14px;
-        }
-        .modal-box .modal-media {
-          height: 110px;
-        }
-        .testimonial-item p {
-          font-size: 0.75rem;
-        }
-        .testimonial-item .stars {
-          font-size: 0.75rem;
-        }
-      }
 
-      @media (max-width: 340px) {
+        .hero-section .big-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-section h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #8a5a4a;
+        }
+
+        .hero-section .sub-title {
+            color: #7d6a60;
+            font-size: 0.75rem;
+            margin-bottom: 2px;
+        }
+
+        .hero-section .team-name {
+            color: #a08070;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .hero-section .hero-desc {
+            color: #5d4a40;
+            font-size: 0.8rem;
+            max-width: 350px;
+            margin: 0 auto 12px;
+            line-height: 1.6;
+            padding: 0 4px;
+        }
+
+        .hero-section .btn-start {
+            background: linear-gradient(135deg, #8a5a4a, #a67a6a);
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 8px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(138, 90, 74, 0.2);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .hero-section .btn-start:active {
+            transform: scale(0.97);
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2a1f1a;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-title i { color: #8a5a4a; font-size: 1rem; }
+
         .services-grid {
-          grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 22px;
         }
+
+        .service-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid #f0e8e2;
+        }
+
+        .service-card:active {
+            transform: scale(0.97);
+        }
+
+        .service-card .icon-wrap {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f7f0ea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 6px;
+        }
+
+        .service-card .icon-wrap i {
+            font-size: 1rem;
+            color: #8a5a4a;
+        }
+
+        .service-card h4 {
+            font-size: 0.7rem;
+            color: #2a1f1a;
+            margin-bottom: 1px;
+        }
+
+        .service-card p {
+            font-size: 0.6rem;
+            color: #7d6a60;
+            line-height: 1.3;
+        }
+
+        /* ===== الأقسام الأربعة - بنفس شكل المشاريع بالضبط ===== */
+        .sections-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .section-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid #f0e8e2;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .section-card:active {
+            transform: scale(0.97);
+        }
+
+        .section-card .section-img {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            background: #f0e8e2;
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #8a5a4a;
+        }
+
+        .section-card .section-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .section-card .info {
+            flex: 1;
+        }
+
+        .section-card .info h4 {
+            font-size: 0.95rem;
+            color: #2a1f1a;
+            font-weight: 700;
+        }
+
+        .section-card .info p {
+            font-size: 0.65rem;
+            color: #7d6a60;
+        }
+
+        .section-card .btn-view {
+            background: #8a5a4a;
+            color: #fff;
+            border: none;
+            padding: 5px 16px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.3s;
+            flex-shrink: 0;
+        }
+
+        .section-card .btn-view:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== المودال ===== */
+        .full-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #faf5f0;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px 16px 30px;
+        }
+
+        .full-modal.active {
+            display: block;
+        }
+
+        .full-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e8d5cc;
+        }
+
+        .full-modal .modal-header h2 {
+            font-size: 1.3rem;
+            color: #8a5a4a;
+        }
+
+        .full-modal .modal-header .close-full {
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            color: #8a5a4a;
+            cursor: pointer;
+        }
+
+        .full-modal .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .full-modal .project-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #e8d5cc;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .full-modal .project-card:active {
+            transform: scale(0.97);
+        }
+
+        .full-modal .project-card .card-img {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            background: #f0e8e2;
+            margin-bottom: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .full-modal .project-card .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .full-modal .project-card .card-img video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .full-modal .project-card .card-img .placeholder-icon {
+            font-size: 2.5rem;
+            color: #8a5a4a;
+        }
+
+        .full-modal .project-card h5 {
+            font-size: 0.9rem;
+            color: #2a1f1a;
+            margin-bottom: 2px;
+        }
+
+        .full-modal .project-card p {
+            font-size: 0.7rem;
+            color: #7d6a60;
+            margin-bottom: 10px;
+        }
+
+        .full-modal .project-card .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .full-modal .project-card .card-actions .btn-action {
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Cairo', sans-serif;
+            border: 1px solid #e8d5cc;
+            background: #faf5f0;
+            color: #4d3a32;
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .full-modal .project-card .card-actions .btn-action:active {
+            transform: scale(0.95);
+        }
+
+        .full-modal .project-card .card-actions .btn-action.primary {
+            background: #8a5a4a;
+            color: #fff;
+            border-color: #8a5a4a;
+        }
+
+        /* ===== تقييمات ===== */
+        .testimonials-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .testimonial-item {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 14px 16px;
+            transition: 0.3s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid #f0e8e2;
+        }
+
+        .testimonial-item:active {
+            transform: scale(0.98);
+        }
+
+        .testimonial-item .testimonial-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .testimonial-item .stars {
+            color: #f5a623;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+
+        .testimonial-item .client-name {
+            font-weight: 700;
+            color: #8a5a4a;
+            font-size: 0.75rem;
+        }
+
+        .testimonial-item .testimonial-date {
+            font-size: 0.55rem;
+            color: #a09080;
+        }
+
+        .testimonial-item p {
+            font-size: 0.8rem;
+            color: #3d322c;
+            line-height: 1.6;
+            font-style: italic;
+            margin-top: 4px;
+            padding-right: 4px;
+        }
+
+        .form-section {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 14px 14px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid #f0e8e2;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: #4d3a32;
+            margin-bottom: 2px;
+        }
+
+        .form-group label i {
+            color: #8a5a4a;
+            margin-left: 4px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 6px 10px;
+            background: #faf5f0;
+            border: 1px solid #e8d5cc;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.8rem;
+            color: #2a1f1a;
+            transition: 0.25s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8a5a4a;
+            box-shadow: 0 0 0 3px rgba(138, 90, 74, 0.05);
+        }
+
+        .form-group textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8a5a4a, #a67a6a);
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Cairo', sans-serif;
+            width: 100%;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(138, 90, 74, 0.15);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
         .team-grid {
-          grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
         }
-      }
 
-      .fade-in {
-        animation: fadeUp 0.4s ease;
-      }
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
+        .team-member {
+            background: #ffffff;
+            text-align: center;
+            padding: 12px 6px 10px;
+            border-radius: 14px;
+            transition: 0.3s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid #f0e8e2;
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+
+        .team-member:active {
+            transform: scale(0.97);
         }
-      }
+
+        .team-member .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #f7f0ea;
+            margin: 0 auto 5px;
+            overflow: hidden;
+            border: 2px solid #e8d5cc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-member .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-member .avatar i {
+            font-size: 1.3rem;
+            color: #8a5a4a;
+        }
+
+        .team-member h5 {
+            font-size: 0.7rem;
+            color: #2a1f1a;
+            margin-bottom: 1px;
+        }
+
+        .team-member p {
+            font-size: 0.55rem;
+            color: #7d6a60;
+        }
+
+        .social-bottom {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px 0 4px;
+            border-top: 1px solid #e8d5cc;
+            margin-top: 6px;
+        }
+
+        .social-bottom a {
+            color: #a08070;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            text-decoration: none;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid #e8d5cc;
+            background: #ffffff;
+        }
+
+        .social-bottom a:active {
+            transform: scale(0.9);
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 6px;
+            color: #7d6a60;
+            font-size: 0.65rem;
+        }
+
+        .footer strong { color: #8a5a4a; }
+
+        /* ===== صفحة التفاصيل ===== */
+        .detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #faf5f0;
+            z-index: 1100;
+            overflow-y: auto;
+            padding: 20px 16px 30px;
+        }
+
+        .detail-modal.active {
+            display: block;
+        }
+
+        .detail-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e8d5cc;
+        }
+
+        .detail-modal .modal-header h2 {
+            font-size: 1.3rem;
+            color: #8a5a4a;
+        }
+
+        .detail-modal .modal-header .close-detail {
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            color: #8a5a4a;
+            cursor: pointer;
+        }
+
+        .detail-modal .detail-media {
+            width: 100%;
+            height: 300px;
+            border-radius: 16px;
+            background: #e8ddd6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 14px;
+            border: 1px solid #e8d5cc;
+        }
+
+        .detail-modal .detail-media img,
+        .detail-modal .detail-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .detail-modal .detail-info h3 {
+            font-size: 1.2rem;
+            color: #8a5a4a;
+            margin-bottom: 4px;
+        }
+
+        .detail-modal .detail-info .meta {
+            font-size: 0.75rem;
+            color: #7d6a60;
+            margin-bottom: 10px;
+        }
+
+        .detail-modal .detail-info .meta span {
+            display: inline-block;
+            margin-left: 12px;
+        }
+
+        .detail-modal .detail-info .desc {
+            color: #4d3a32;
+            line-height: 1.7;
+            font-size: 0.9rem;
+            margin-bottom: 14px;
+        }
+
+        .detail-modal .detail-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detail-modal .detail-actions .btn-detail {
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid #e8d5cc;
+            background: #faf5f0;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #4d3a32;
+        }
+
+        .detail-modal .detail-actions .btn-detail:active {
+            transform: scale(0.97);
+        }
+
+        .detail-modal .detail-actions .btn-detail.whatsapp {
+            background: #25D366;
+            color: #fff;
+            border-color: #25D366;
+        }
+
+        .detail-modal .detail-actions .btn-detail.whatsapp:active {
+            background: #1da851;
+        }
+
+        @media (max-width: 380px) {
+            .services-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+            .team-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+            .hero-section h1 { font-size: 1.3rem; }
+            .hero-section .big-logo { width: 85px; height: 85px; }
+            .service-card { padding: 10px 6px; }
+            .service-card .icon-wrap { width: 32px; height: 32px; }
+            .service-card .icon-wrap i { font-size: 0.9rem; }
+            .section-card { padding: 12px; }
+            .section-card .section-img { width: 52px; height: 52px; font-size: 1.3rem; }
+            .full-modal .project-card .card-img { height: 150px; }
+            .detail-modal .detail-media { height: 200px; }
+        }
+
+        @media (max-width: 340px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr; }
+            .full-modal .project-card .card-actions { flex-direction: column; }
+        }
+
+        .fade-in {
+            animation: fadeUp 0.4s ease;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
-  </head>
-  <body>
-    <div class="dashboard">
-      <header class="top-header">
+</head>
+<body>
+
+<div class="dashboard">
+
+    <header class="top-header">
         <div class="logo-mini">
-          <div class="circle-mini">
-            <img
-              src="h1.jpg"
-              alt="VAYLOR"
-              onerror="
-                this.src = 'https://placehold.co/80x80/faf5f0/8a5a4a?text=V'
-              "
-            />
-          </div>
-          <div>
-            <h1>VAYLOR</h1>
-            <span>CREATIVE PRODUCTION</span>
-          </div>
+            <div class="circle-mini">
+                <img src="h1.jpg" alt="VAYLOR" onerror="this.src='https://placehold.co/80x80/faf5f0/8a5a4a?text=V'"/>
+            </div>
+            <div>
+                <h1>VAYLOR</h1>
+                <span>CREATIVE PRODUCTION</span>
+            </div>
         </div>
-        <button class="menu-toggle" id="menuToggle">
-          <i class="fas fa-bars"></i>
-        </button>
-      </header>
+        <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+    </header>
 
-      <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-      <aside class="sidebar" id="sidebar">
-        <button class="close-btn" id="closeSidebar">
-          <i class="fas fa-times"></i>
-        </button>
+    <aside class="sidebar" id="sidebar">
+        <button class="close-btn" id="closeSidebar"><i class="fas fa-times"></i></button>
         <div class="logo-area">
-          <div class="circle-logo">
-            <img
-              src="h1.jpg"
-              alt="VAYLOR"
-              onerror="
-                this.src = 'https://placehold.co/100x100/faf5f0/8a5a4a?text=V'
-              "
-            />
-          </div>
-          <h2>VAYLOR</h2>
-          <span>CREATIVE PRODUCTION</span>
+            <div class="circle-logo">
+                <img src="h1.jpg" alt="VAYLOR" onerror="this.src='https://placehold.co/100x100/faf5f0/8a5a4a?text=V'"/>
+            </div>
+            <h2>VAYLOR</h2>
+            <span>CREATIVE PRODUCTION</span>
         </div>
 
         <div class="social-top">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/vaylor_media?igsh=c2pldG12aTJ1NWpl"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-whatsapp"></i></a>
-          <a href="mailto:info@vaylor.com"><i class="fas fa-envelope"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:info@vaylor.com"><i class="fas fa-envelope"></i></a>
         </div>
 
         <ul class="nav-links">
-          <li class="active">
-            <a href="#home"><i class="fas fa-home"></i> الرئيسية</a>
-          </li>
-          <li>
-            <a href="#services"><i class="fas fa-cubes"></i> الخدمات</a>
-          </li>
-          <li>
-            <a href="#projects"><i class="fas fa-folder-open"></i> مشاريعنا</a>
-          </li>
-          <li>
-            <a href="#testimonials"
-              ><i class="fas fa-comment-dots"></i> آراء العملاء</a
-            >
-          </li>
-          <li>
-            <a href="#apply"><i class="fas fa-pen-to-square"></i> تقديم طلب</a>
-          </li>
-          <li>
-            <a href="#team"><i class="fas fa-users"></i> الفريق</a>
-          </li>
+            <li class="active"><a href="#home"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="#services"><i class="fas fa-cubes"></i> الخدمات</a></li>
+            <li><a href="#projects"><i class="fas fa-folder-open"></i> أعمالنا</a></li>
+            <li><a href="#testimonials"><i class="fas fa-comment-dots"></i> آراء العملاء</a></li>
+            <li><a href="#apply"><i class="fas fa-pen-to-square"></i> تقديم طلب</a></li>
+            <li><a href="#team"><i class="fas fa-users"></i> الفريق</a></li>
         </ul>
-      </aside>
+    </aside>
 
-      <main class="main-content" id="home">
+    <main class="main-content" id="home">
+
         <section class="hero-section fade-in">
-          <div class="big-logo">
-            <img
-              src="h1.jpg"
-              alt="VAYLOR"
-              onerror="
-                this.src =
-                  'https://placehold.co/150x150/faf5f0/8a5a4a?text=VAYLOR'
-              "
-            />
-          </div>
-          <p class="hero-desc">
-            نقدم حلولاً بصرية احترافية تشمل التصوير، المونتاج، التصميم
-            الجرافيكي، والهوية البصرية.
-          </p>
-          <button
-            class="btn-start"
-            onclick="
-              document
-                .getElementById('services')
-                .scrollIntoView({ behavior: 'smooth' })
-            "
-          >
-            <i class="fas fa-rocket"></i> ابدأ طلب خدماتنا الآن
-          </button>
+            <div class="big-logo">
+                <img src="h1.jpg" alt="VAYLOR" onerror="this.src='https://placehold.co/150x150/faf5f0/8a5a4a?text=VAYLOR'"/>
+            </div>
+            
+            <p class="hero-desc">نقدم حلولاً بصرية احترافية تشمل التصوير، المونتاج، التصميم الجرافيكي، والهوية البصرية.</p>
+            <button class="btn-start" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">
+                <i class="fas fa-rocket"></i> ابدأ طلب خدماتنا الآن
+            </button>
         </section>
 
         <section id="services">
-          <div class="section-title"><i class="fas fa-star"></i> خدماتنا</div>
-          <div class="services-grid">
-            <div class="service-card fade-in">
-              <div class="icon-wrap"><i class="fas fa-camera"></i></div>
-              <h4>تصوير المنتج</h4>
-              <p>تصوير احترافي للمنتجات</p>
+            <div class="section-title"><i class="fas fa-star"></i> خدماتنا</div>
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="icon-wrap"><i class="fas fa-camera"></i></div>
+                    <h4>تصوير المنتج</h4>
+                    <p>تصوير احترافي للمنتجات</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="icon-wrap"><i class="fas fa-ad"></i></div>
+                    <h4>إعلانات تجارية</h4>
+                    <p>إنتاج إعلانات فيديو وصور</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="icon-wrap"><i class="fas fa-video"></i></div>
+                    <h4>موتاج سينمائي</h4>
+                    <p>مونتاج وتعليق صوتي</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="icon-wrap"><i class="fas fa-palette"></i></div>
+                    <h4>هوية بصرية</h4>
+                    <p>تصميم هويات ودعوات</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="icon-wrap"><i class="fas fa-vector-square"></i></div>
+                    <h4>Graphic Design</h4>
+                    <p>تصميم جرافيكي احترافي</p>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="icon-wrap"><i class="fas fa-headphones"></i></div>
+                    <h4>تعليق صوتي</h4>
+                    <p>تعليق صوتي بجودة استوديو</p>
+                </div>
             </div>
-            <div class="service-card fade-in">
-              <div class="icon-wrap"><i class="fas fa-ad"></i></div>
-              <h4>إعلانات تجارية</h4>
-              <p>إنتاج إعلانات فيديو وصور</p>
-            </div>
-            <div class="service-card fade-in">
-              <div class="icon-wrap"><i class="fas fa-video"></i></div>
-              <h4>موتاج سينمائي</h4>
-              <p>مونتاج وتعليق صوتي</p>
-            </div>
-            <div class="service-card fade-in">
-              <div class="icon-wrap"><i class="fas fa-palette"></i></div>
-              <h4>هوية بصرية</h4>
-              <p>تصميم هويات ودعوات</p>
-            </div>
-            <div class="service-card fade-in">
-              <div class="icon-wrap"><i class="fas fa-vector-square"></i></div>
-              <h4>Graphic Design</h4>
-              <p>تصميم جرافيكي احترافي</p>
-            </div>
-            <div class="service-card fade-in">
-              <div class="icon-wrap"><i class="fas fa-headphones"></i></div>
-              <h4>تعليق صوتي</h4>
-              <p>تعليق صوتي بجودة استوديو</p>
-            </div>
-          </div>
         </section>
 
+        <!-- ===== الأقسام الأربعة ===== -->
         <section id="projects">
-          <div class="section-title">
-            <i class="fas fa-folder-open"></i> مشاريعنا
-          </div>
-          <div class="projects-list">
-            <div class="project-item fade-in" data-project="1">
-              <div class="project-header">
-                <i class="fas fa-film"></i>
-                <div class="info">
-                  <h4>فيلم "رؤية"</h4>
-                  <p>فيلم قصير عن الهوية</p>
+            <div class="section-title"><i class="fas fa-folder-open"></i> أعمالنا</div>
+            <div class="sections-list">
+                <!-- 1. الإعلانات -->
+                <div class="section-card" onclick="openFullModal('ad')">
+                    <div class="section-img" id="img-ad">
+                        <span>📢</span>
+                    </div>
+                    <div class="info">
+                        <h4>الإعلانات</h4>
+                        <p>2 مشاريع</p>
+                    </div>
+                    <button class="btn-view">عرض المشاريع</button>
                 </div>
-              </div>
-              <div class="project-preview" onclick="viewProject(1, 'view')">
-                <i class="fas fa-film"></i>
-              </div>
-              <div class="project-actions">
-                <button
-                  class="btn-action primary"
-                  onclick="viewProject(1, 'view')"
-                >
-                  <i class="fas fa-eye"></i> مشاهدة
-                </button>
-                <button class="btn-action" onclick="viewProject(1, 'details')">
-                  <i class="fas fa-info-circle"></i> تفاصيل
-                </button>
-              </div>
-            </div>
 
-            <div class="project-item fade-in" data-project="2">
-              <div class="project-header">
-                <i class="fas fa-bullhorn"></i>
-                <div class="info">
-                  <h4>حملة "نبض"</h4>
-                  <p>حملة إعلانية</p>
+                <!-- 2. التصوير -->
+                <div class="section-card" onclick="openFullModal('photo')">
+                    <div class="section-img" id="img-photo">
+                        <span>📷</span>
+                    </div>
+                    <div class="info">
+                        <h4>التصوير</h4>
+                        <p>5 مشاريع</p>
+                    </div>
+                    <button class="btn-view">عرض المشاريع</button>
                 </div>
-              </div>
-              <div class="project-preview" onclick="viewProject(2, 'view')">
-                <i class="fas fa-bullhorn"></i>
-              </div>
-              <div class="project-actions">
-                <button
-                  class="btn-action primary"
-                  onclick="viewProject(2, 'view')"
-                >
-                  <i class="fas fa-eye"></i> مشاهدة
-                </button>
-                <button class="btn-action" onclick="viewProject(2, 'details')">
-                  <i class="fas fa-info-circle"></i> تفاصيل
-                </button>
-              </div>
-            </div>
 
-            <div class="project-item fade-in" data-project="3">
-              <div class="project-header">
-                <i class="fas fa-music"></i>
-                <div class="info">
-                  <h4>كليب "أمل"</h4>
-                  <p>فيديو كليب</p>
+                <!-- 3. الفيديوهات -->
+                <div class="section-card" onclick="openFullModal('video')">
+                    <div class="section-img" id="img-video">
+                        <span>🎬</span>
+                    </div>
+                    <div class="info">
+                        <h4>الفيديوهات</h4>
+                        <p>2 مشاريع</p>
+                    </div>
+                    <button class="btn-view">عرض المشاريع</button>
                 </div>
-              </div>
-              <div class="project-preview" onclick="viewProject(3, 'view')">
-                <i class="fas fa-music"></i>
-              </div>
-              <div class="project-actions">
-                <button
-                  class="btn-action primary"
-                  onclick="viewProject(3, 'view')"
-                >
-                  <i class="fas fa-eye"></i> مشاهدة
-                </button>
-                <button class="btn-action" onclick="viewProject(3, 'details')">
-                  <i class="fas fa-info-circle"></i> تفاصيل
-                </button>
-              </div>
-            </div>
 
-            <div class="project-item fade-in" data-project="4">
-              <div class="project-header">
-                <i class="fas fa-paint-brush"></i>
-                <div class="info">
-                  <h4>هوية "زين"</h4>
-                  <p>هوية بصرية متكاملة</p>
+                <!-- 4. التعليق الصوتي -->
+                <div class="section-card" onclick="openFullModal('audio')">
+                    <div class="section-img" id="img-audio">
+                        <span>🎧</span>
+                    </div>
+                    <div class="info">
+                        <h4>التعليق الصوتي</h4>
+                        <p>1 مشروع</p>
+                    </div>
+                    <button class="btn-view">عرض المشاريع</button>
                 </div>
-              </div>
-              <div class="project-preview" onclick="viewProject(4, 'view')">
-                <i class="fas fa-paint-brush"></i>
-              </div>
-              <div class="project-actions">
-                <button
-                  class="btn-action primary"
-                  onclick="viewProject(4, 'view')"
-                >
-                  <i class="fas fa-eye"></i> مشاهدة
-                </button>
-                <button class="btn-action" onclick="viewProject(4, 'details')">
-                  <i class="fas fa-info-circle"></i> تفاصيل
-                </button>
-              </div>
             </div>
-          </div>
         </section>
 
         <section id="testimonials">
-          <div class="section-title">
-            <i class="fas fa-comment-dots"></i> آراء العملاء
-          </div>
-          <div class="testimonials-list">
-            <div class="testimonial-item fade-in">
-              <div class="testimonial-header">
-                <span class="stars">★★★★★</span>
-                <span class="client-name">محمد العتيبي</span>
-              </div>
-              <p>
-                "أفضل فريق عمل تعاملت معه، إبداع واحترافية في التصميم والإخراج."
-              </p>
-              <span class="testimonial-date">منذ 3 أيام</span>
+            <div class="section-title"><i class="fas fa-comment-dots"></i> آراء العملاء</div>
+            <div class="testimonials-list">
+                <div class="testimonial-item fade-in">
+                    <div class="testimonial-header">
+                        <span class="stars">★★★★★</span>
+                        <span class="client-name">محمد العتيبي</span>
+                    </div>
+                    <p>"أفضل فريق عمل تعاملت معه، إبداع واحترافية في التصميم والإخراج."</p>
+                    <span class="testimonial-date">منذ 3 أيام</span>
+                </div>
+                <div class="testimonial-item fade-in">
+                    <div class="testimonial-header">
+                        <span class="stars">★★★★★</span>
+                        <span class="client-name">نورة الفايز</span>
+                    </div>
+                    <p>"مونتاج سينمائي بجودة عالمية، أنصح الجميع بالتعامل مع VAYLOR."</p>
+                    <span class="testimonial-date">منذ أسبوع</span>
+                </div>
+                <div class="testimonial-item fade-in">
+                    <div class="testimonial-header">
+                        <span class="stars">★★★★★</span>
+                        <span class="client-name">عبدالله السعيد</span>
+                    </div>
+                    <p>"تصميم الهوية البصرية كان مذهلاً، يعكس روح علامتنا التجارية."</p>
+                    <span class="testimonial-date">منذ 5 أيام</span>
+                </div>
+                <div class="testimonial-item fade-in">
+                    <div class="testimonial-header">
+                        <span class="stars">★★★★★</span>
+                        <span class="client-name">لبنى الحسن</span>
+                    </div>
+                    <p>"إعلانات تجارية احترافية حققت لنا نجاحاً كبيراً، شكراً VAYLOR."</p>
+                    <span class="testimonial-date">منذ يومين</span>
+                </div>
             </div>
-            <div class="testimonial-item fade-in">
-              <div class="testimonial-header">
-                <span class="stars">★★★★★</span>
-                <span class="client-name">نورة الفايز</span>
-              </div>
-              <p>
-                "مونتاج سينمائي بجودة عالمية، أنصح الجميع بالتعامل مع VAYLOR."
-              </p>
-              <span class="testimonial-date">منذ أسبوع</span>
-            </div>
-            <div class="testimonial-item fade-in">
-              <div class="testimonial-header">
-                <span class="stars">★★★★★</span>
-                <span class="client-name">عبدالله السعيد</span>
-              </div>
-              <p>
-                "تصميم الهوية البصرية كان مذهلاً، يعكس روح علامتنا التجارية."
-              </p>
-              <span class="testimonial-date">منذ 5 أيام</span>
-            </div>
-            <div class="testimonial-item fade-in">
-              <div class="testimonial-header">
-                <span class="stars">★★★★★</span>
-                <span class="client-name">لبنى الحسن</span>
-              </div>
-              <p>
-                "إعلانات تجارية احترافية حققت لنا نجاحاً كبيراً، شكراً VAYLOR."
-              </p>
-              <span class="testimonial-date">منذ يومين</span>
-            </div>
-          </div>
         </section>
 
         <section id="apply">
-          <div class="section-title">
-            <i class="fas fa-pen-to-square"></i> تقديم طلب
-          </div>
-          <div class="form-section">
-            <form id="requestForm">
-              <div class="form-grid">
-                <div class="form-group">
-                  <label><i class="fas fa-user"></i> الاسم الكامل</label>
-                  <input
-                    type="text"
-                    id="reqName"
-                    placeholder="أدخل اسمك"
-                    required
-                  />
-                </div>
-                <div class="form-group">
-                  <label
-                    ><i class="fas fa-envelope"></i> البريد الإلكتروني</label
-                  >
-                  <input
-                    type="email"
-                    id="reqEmail"
-                    placeholder="بريدك الإلكتروني"
-                    required
-                  />
-                </div>
-                <div class="form-group">
-                  <label><i class="fas fa-phone"></i> رقم الجوال</label>
-                  <input type="tel" id="reqPhone" placeholder="رقم التواصل" />
-                </div>
-                <div class="form-group">
-                  <label><i class="fas fa-tag"></i> نوع الخدمة</label>
-                  <select id="reqService">
-                    <option value="تصوير المنتج">تصوير المنتج</option>
-                    <option value="إعلانات تجارية">إعلانات تجارية</option>
-                    <option value="موتاج سينمائي">موتاج سينمائي</option>
-                    <option value="هوية بصرية ودعوات">هوية بصرية ودعوات</option>
-                    <option value="Graphic Design">Graphic Design</option>
-                    <option value="تعليق صوتي">تعليق صوتي</option>
-                    <option value="أخرى">أخرى</option>
-                  </select>
-                </div>
-                <div class="form-group" style="grid-column: 1 / -1">
-                  <label><i class="fas fa-comment"></i> تفاصيل الطلب</label>
-                  <textarea
-                    id="reqDetails"
-                    placeholder="اكتب تفاصيل مشروعك هنا..."
-                  ></textarea>
-                </div>
-              </div>
-              <div style="margin-top: 10px">
-                <button
-                  type="button"
-                  class="btn-primary"
-                  onclick="submitRequest()"
-                >
-                  <i class="fas fa-paper-plane"></i> إرسال الطلب
-                </button>
-              </div>
-            </form>
-          </div>
+            <div class="section-title"><i class="fas fa-pen-to-square"></i> تقديم طلب</div>
+            <div class="form-section">
+                <form id="requestForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> الاسم الكامل</label>
+                            <input type="text" id="reqName" placeholder="أدخل اسمك" required />
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
+                            <input type="email" id="reqEmail" placeholder="بريدك الإلكتروني" required />
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> رقم الجوال</label>
+                            <input type="tel" id="reqPhone" placeholder="رقم التواصل" />
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-tag"></i> نوع الخدمة</label>
+                            <select id="reqService">
+                                <option value="تصوير المنتج">تصوير المنتج</option>
+                                <option value="إعلانات تجارية">إعلانات تجارية</option>
+                                <option value="موتاج سينمائي">موتاج سينمائي</option>
+                                <option value="هوية بصرية ودعوات">هوية بصرية ودعوات</option>
+                                <option value="Graphic Design">Graphic Design</option>
+                                <option value="تعليق صوتي">تعليق صوتي</option>
+                                <option value="أخرى">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label><i class="fas fa-comment"></i> تفاصيل الطلب</label>
+                            <textarea id="reqDetails" placeholder="اكتب تفاصيل مشروعك هنا..."></textarea>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button type="button" class="btn-primary" onclick="submitRequest()">
+                            <i class="fas fa-paper-plane"></i> إرسال الطلب
+                        </button>
+                    </div>
+                </form>
+            </div>
         </section>
 
         <section id="team">
-          <div class="section-title">
-            <i class="fas fa-users"></i> فريق العمل
-          </div>
-          <div class="team-grid">
-            <div class="team-member">
-              <div class="avatar">
-                <img
-                  src="غزل.jpg"
-                  alt="غزل زيبق"
-                  onerror="
-                    this.src = 'https://placehold.co/60x60/f7f0ea/8a5a4a?text=غ'
-                  "
-                />
-              </div>
-              <h5>غزل زيبق</h5>
-              <p>مخرجة ومونتيرة</p>
+            <div class="section-title"><i class="fas fa-users"></i> فريق العمل</div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="avatar">
+                        <img src="غزل.jpg" alt="غزل زيبق" onerror="this.src='https://placehold.co/60x60/f7f0ea/8a5a4a?text=غ'"/>
+                    </div>
+                    <h5>غزل زيبق</h5>
+                    <p>مخرجة ومونتيرة</p>
+                </div>
+                <div class="team-member">
+                    <div class="avatar">
+                        <img src="شهد.jpg" alt="شهد تعمري" onerror="this.src='https://placehold.co/60x60/f7f0ea/8a5a4a?text=ش'"/>
+                    </div>
+                    <h5>شهد تعمري</h5>
+                    <p>مصممة جرافيك</p>
+                </div>
+                <div class="team-member">
+                    <div class="avatar">
+                        <img src="لانا.jpg" alt="لانا نجار" onerror="this.src='https://placehold.co/60x60/f7f0ea/8a5a4a?text=ل'"/>
+                    </div>
+                    <h5>لانا نجار</h5>
+                    <p>منتجة محتوى</p>
+                </div>
+                <div class="team-member">
+                    <div class="avatar">
+                        <img src="يوسف.jpg" alt="يوسف حوري" onerror="this.src='https://placehold.co/60x60/f7f0ea/8a5a4a?text=ي'"/>
+                    </div>
+                    <h5>يوسف حوري</h5>
+                    <p>مصور ومخرج</p>
+                </div>
+                <div class="team-member">
+                    <div class="avatar">
+                        <img src="حلا.jpg" alt="حلا عزيزي" onerror="this.src='https://placehold.co/60x60/f7f0ea/8a5a4a?text=ح'"/>
+                    </div>
+                    <h5>حلا عزيزي</h5>
+                    <p>مصممة هوية بصرية</p>
+                </div>
+                <div class="team-member">
+                    <div class="avatar">
+                        <img src="اياد.jpg" alt="إياد قضيماتي" onerror="this.src='https://placehold.co/60x60/f7f0ea/8a5a4a?text=إ'"/>
+                    </div>
+                    <h5>إياد قضيماتي</h5>
+                    <p>مهندس صوت ومونتير</p>
+                </div>
+                <div class="team-member">
+                    <div class="avatar">
+                        <img src="رهام.jpg" alt="رهام البكري" onerror="this.src='https://placehold.co/60x60/f7f0ea/8a5a4a?text=ر'"/>
+                    </div>
+                    <h5>رهام البكري</h5>
+                    <p>مسؤولة تسويق</p>
+                </div>
+                <div class="team-member">
+                    <div class="avatar">
+                        <img src="نجيب.jpg" alt="نجيب حسوني" onerror="this.src='https://placehold.co/60x60/f7f0ea/8a5a4a?text=ن'"/>
+                    </div>
+                    <h5>نجيل حسوني</h5>
+                    <p>مصورة ومخرجة</p>
+                </div>
             </div>
-            <div class="team-member">
-              <div class="avatar">
-                <img
-                  src="نجيب.jpg"
-                  alt="نجيب حسوني"
-                  onerror="
-                    this.src = 'https://placehold.co/60x60/f7f0ea/8a5a4a?text=ن'
-                  "
-                />
-              </div>
-              <h5>نجيل حسوني</h5>
-              <p>مصورة ومخرجة</p>
-            </div>
-            <div class="team-member">
-              <div class="avatar">
-                <img
-                  src="شهد.jpg"
-                  alt="شهد تعمري"
-                  onerror="
-                    this.src = 'https://placehold.co/60x60/f7f0ea/8a5a4a?text=ش'
-                  "
-                />
-              </div>
-              <h5>شهد تعمري</h5>
-              <p>مصممة جرافيك</p>
-            </div>
-            <div class="team-member">
-              <div class="avatar">
-                <img
-                  src="لانا.jpg"
-                  alt="لانا نجار"
-                  onerror="
-                    this.src = 'https://placehold.co/60x60/f7f0ea/8a5a4a?text=ل'
-                  "
-                />
-              </div>
-              <h5>لانا نجار</h5>
-              <p>منتجة محتوى</p>
-            </div>
-            <div class="team-member">
-              <div class="avatar">
-                <img
-                  src="يوسف.jpg"
-                  alt="يوسف حوري"
-                  onerror="
-                    this.src = 'https://placehold.co/60x60/f7f0ea/8a5a4a?text=ي'
-                  "
-                />
-              </div>
-              <h5>يوسف حوري</h5>
-              <p>مصور ومخرج</p>
-            </div>
-            <div class="team-member">
-              <div class="avatar">
-                <img
-                  src="حلا.jpg"
-                  alt="حلا عزيزي"
-                  onerror="
-                    this.src = 'https://placehold.co/60x60/f7f0ea/8a5a4a?text=ح'
-                  "
-                />
-              </div>
-              <h5>حلا عزيزي</h5>
-              <p>مصممة هوية بصرية</p>
-            </div>
-            <div class="team-member">
-              <div class="avatar">
-                <img
-                  src="اياد.jpg"
-                  alt="إياد قضيماتي"
-                  onerror="
-                    this.src = 'https://placehold.co/60x60/f7f0ea/8a5a4a?text=إ'
-                  "
-                />
-              </div>
-              <h5>إياد قضيماتي</h5>
-              <p>مهندس صوت ومونتير</p>
-            </div>
-            <div class="team-member">
-              <div class="avatar">
-                <img
-                  src="رهام.jpg"
-                  alt="رهام البكري"
-                  onerror="
-                    this.src = 'https://placehold.co/60x60/f7f0ea/8a5a4a?text=ر'
-                  "
-                />
-              </div>
-              <h5>رهام حمادية</h5>
-              <p>مسؤولة تسويق</p>
-            </div>
-          </div>
         </section>
 
         <div class="social-bottom">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/vaylor_media?igsh=c2pldG12aTJ1NWpl"
-            ><i class="fab fa-instagram"></i
-          ></a>
-          <a href="#"><i class="fab fa-whatsapp"></i></a>
-          <a href="mailto:info@vaylor.com"><i class="fas fa-envelope"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:info@vaylor.com"><i class="fas fa-envelope"></i></a>
         </div>
 
         <footer class="footer">
-          <p>© 2026 <strong>VAYLOR CREATIVE PRODUCTION</strong></p>
+            <p>© 2026 <strong>VAYLOR CREATIVE PRODUCTION</strong></p>
         </footer>
-      </main>
+
+    </main>
+</div>
+
+<!-- ===== الصفحة الكاملة للمشاريع ===== -->
+<div class="full-modal" id="fullModal">
+    <div class="modal-header">
+        <h2 id="fullModalTitle">الإعلانات</h2>
+        <button class="close-full" onclick="closeFullModal()"><i class="fas fa-times"></i></button>
     </div>
+    <div class="projects-list" id="fullModalList"></div>
+</div>
 
-    <div class="modal-overlay" id="projectModal">
-      <div class="modal-box">
-        <button class="close-modal" onclick="closeProjectModal()">
-          <i class="fas fa-times"></i>
-        </button>
-        <div class="modal-media" id="modalMedia">
-          <i class="fas fa-film"></i>
-        </div>
-        <h3 id="modalTitle">عنوان المشروع</h3>
-        <div class="modal-meta">
-          <span><i class="fas fa-calendar"></i> 2025</span>
-          <span><i class="fas fa-tag"></i> إنتاج VAYLOR</span>
-        </div>
-        <p id="modalDesc">تفاصيل المشروع هنا...</p>
-        <button class="whatsapp-btn" onclick="sendWhatsApp()">
-          <i class="fab fa-whatsapp"></i> إرسال طلب عبر واتساب
-        </button>
-        <p
-          style="
-            margin-top: 5px;
-            font-size: 0.6rem;
-            color: #7d6a60;
-            text-align: center;
-          "
-        >
-          <i class="fas fa-phone"></i> رقم مؤقت: 0555555555
-        </p>
-      </div>
+<!-- ===== صفحة التفاصيل ===== -->
+<div class="detail-modal" id="detailModal">
+    <div class="modal-header">
+        <h2 id="detailTitle">تفاصيل العمل</h2>
+        <button class="close-detail" onclick="closeDetail()"><i class="fas fa-times"></i></button>
     </div>
+    <div id="detailContent"></div>
+</div>
 
-    <script>
-      const sidebar = document.getElementById("sidebar");
-      const overlay = document.getElementById("sidebarOverlay");
-      const menuToggle = document.getElementById("menuToggle");
-      const closeSidebar = document.getElementById("closeSidebar");
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+    const closeSidebar = document.getElementById('closeSidebar');
 
-      function openSidebar() {
-        sidebar.classList.add("open");
-        overlay.classList.add("open");
-        document.body.style.overflow = "hidden";
-      }
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
 
-      function closeSidebarFn() {
-        sidebar.classList.remove("open");
-        overlay.classList.remove("open");
-        document.body.style.overflow = "";
-      }
+    function closeSidebarFn() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+    }
 
-      menuToggle.addEventListener("click", openSidebar);
-      closeSidebar.addEventListener("click", closeSidebarFn);
-      overlay.addEventListener("click", closeSidebarFn);
+    menuToggle.addEventListener('click', openSidebar);
+    closeSidebar.addEventListener('click', closeSidebarFn);
+    overlay.addEventListener('click', closeSidebarFn);
 
-      const projectsData = {
-        1: {
-          title: 'فيلم "رؤية"',
-          desc: "فيلم قصير عن الهوية السعودية، إنتاج VAYLOR. عمل فني يعكس ثقافة المملكة برؤية معاصرة. تم إنتاج الفيلم بجودة 4K مع مونتاج سينمائي احترافي.",
-          icon: "fa-film",
-          type: "video",
-          file: "project1.mp4",
-          size: "4K",
-          duration: "3:45",
+    // ===== بيانات المشاريع حسب طلبك =====
+    const sectionData = {
+        ad: {
+            title: 'الإعلانات',
+            projects: [
+                { id: 1, title: 'إعلان ساعة رولكس', desc: 'إعلان تجاري لساعة رولكس الفاخرة', type: 'image', file: 'ساعه.jpg', size: '1920x1080' },
+                { id: 5, title: 'إعلان سيارة مرسيدس', desc: 'إعلان تجاري لسيارة مرسيدس الفاخرة', type: 'image', file: 'سياره.jpg', size: '1920x1080' }
+            ]
         },
-        2: {
-          title: 'حملة "نبض"',
-          desc: "حملة إعلانية لعلامة تجارية كبرى، حققت أكثر من مليون مشاهدة خلال أسبوع. تم استخدام تقنيات تصوير متقدمة وإضاءة احترافية.",
-          icon: "fa-bullhorn",
-          type: "image",
-          file: "project2.jpg",
-          size: "1920x1080",
-          duration: "",
+        photo: {
+            title: 'التصوير - صور خطوبة',
+            projects: [
+                { id: 6, title: 'صور خطوبة 1', desc: 'صور فوتوغرافية احترافية لحفل خطوبة.', type: 'image', file: 'عرس1.jpg', size: '4000x3000' },
+                { id: 7, title: 'صور خطوبة 2', desc: 'صور فوتوغرافية احترافية لحفل خطوبة.', type: 'image', file: 'عرس2.jpg', size: '6000x4000' },
+                { id: 8, title: 'صور خطوبة 3', desc: 'صور فوتوغرافية احترافية لحفل خطوبة.', type: 'image', file: 'عرس3.jpg', size: '5000x3500' },
+                { id: 9, title: 'صور خطوبة 4', desc: 'صور فوتوغرافية احترافية لحفل خطوبة.', type: 'image', file: 'عرس4.jpg', size: '4500x3000' },
+                { id: 10, title: 'صور خطوبة 5', desc: 'صور فوتوغرافية احترافية لحفل خطوبة.', type: 'image', file: 'عرس5.jpg', size: '5500x4000' }
+            ]
         },
-        3: {
-          title: 'كليب "أمل"',
-          desc: "فيديو كليب بجودة سينمائية، تعاون مع فنانين محليين لإنتاج عمل فني مميز. تم التصوير في مواقع متعددة باستخدام كاميرات سينمائية.",
-          icon: "fa-music",
-          type: "video",
-          file: "project3.mp4",
-          size: "4K",
-          duration: "4:20",
+        video: {
+            title: 'الفيديوهات',
+            projects: [
+                { id: 2, title: 'إعلان كافيه', desc: 'إعلان فيديو احترافي لمقهى عصري.', type: 'video', file: 'كافيه.mp4', size: '4K', duration: '3:45' },
+                { id: 3, title: 'إعلان خطوبة', desc: 'فيديو احترافي لحفل خطوبة.', type: 'video', file: 'خطوبه.mp4', size: '4K', duration: '4:20' }
+            ]
         },
-        4: {
-          title: 'هوية "زين"',
-          desc: "تصميم هوية بصرية متكاملة شملت الشعار، الأدوات التسويقية، والدليل الإعلامي. تم تصميم الهوية بأسلوب عصري يعكس قيم العلامة التجارية.",
-          icon: "fa-paint-brush",
-          type: "image",
-          file: "صور1.jpg",
-          size: "3000x2000",
-          duration: "",
-        },
-      };
+        audio: {
+            title: 'التعليق الصوتي',
+            projects: [
+                { id: 4, title: 'تعليق صوتي - ساعة رولكس', desc: 'فيديو تعليق صوتي احترافي عن ساعة رولكس الفاخرة.', type: 'video', file: 'تعليق.mp4', size: '4K', duration: '0:30' }
+            ]
+        }
+    };
 
-      let currentProjectId = 1;
+    // ===== فتح المودال =====
+    function openFullModal(key) {
+        const data = sectionData[key];
+        if (!data) return;
 
-      function viewProject(id, action) {
-        const project = projectsData[id];
+        document.getElementById('fullModalTitle').textContent = data.title;
+        const list = document.getElementById('fullModalList');
+        list.innerHTML = '';
+
+        data.projects.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'project-card';
+
+            let mediaHtml = '';
+            if (p.type === 'video') {
+                mediaHtml = `<video style="width:100%;height:100%;object-fit:contain;" onclick="event.stopPropagation();" controls>
+                    <source src="${p.file}" type="video/mp4">
+                </video>`;
+            } else if (p.type === 'audio') {
+                mediaHtml = `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;flex-direction:column;gap:4px;background:#f0e8e2;">
+                    <i class="fas fa-headphones" style="font-size:3rem;color:#8a5a4a;"></i>
+                    <audio controls style="width:90%;" onclick="event.stopPropagation();">
+                        <source src="${p.file}" type="audio/mp3">
+                    </audio>
+                </div>`;
+            } else {
+                mediaHtml = `<img src="${p.file}" alt="${p.title}" style="width:100%;height:100%;object-fit:contain;" onclick="openDetail(${p.id})" onerror="this.src='https://placehold.co/400x300/e8ddd6/8a5a4a?text=${p.title}'"/>`;
+            }
+
+            card.innerHTML = `
+                <div class="card-img" onclick="${p.type === 'video' || p.type === 'audio' ? 'openDetail(' + p.id + ')' : 'openDetail(' + p.id + ')'}">
+                    ${mediaHtml}
+                </div>
+                <h5>${p.title}</h5>
+                <p>${p.desc}</p>
+                <div class="card-actions">
+                    <button class="btn-action primary" onclick="openDetail(${p.id})"><i class="fas fa-eye"></i> مشاهدة</button>
+                    <button class="btn-action" onclick="openDetail(${p.id})"><i class="fas fa-info-circle"></i> تفاصيل</button>
+                </div>
+            `;
+            list.appendChild(card);
+        });
+
+        document.getElementById('fullModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeFullModal() {
+        document.getElementById('fullModal').classList.remove('active');
+        document.body.style.overflow = '';
+        const videos = document.querySelectorAll('#fullModalList video');
+        videos.forEach(v => v.pause());
+        const audios = document.querySelectorAll('#fullModalList audio');
+        audios.forEach(a => a.pause());
+    }
+
+    // ===== التفاصيل =====
+    const fullData = {
+        1: { title: 'إعلان ساعة رولكس', desc: 'إعلان تجاري لساعة رولكس الفاخرة بتصميم عصري.', type: 'image', file: 'ساعه.jpg', size: '1920x1080', category: 'إعلان' },
+        2: { title: 'إعلان كافيه', desc: 'إعلان فيديو احترافي لمقهى عصري.', type: 'video', file: 'كافيه.mp4', size: '4K', duration: '3:45', category: 'فيديو' },
+        3: { title: 'إعلان خطوبة', desc: 'فيديو احترافي لحفل خطوبة.', type: 'video', file: 'خطوبه.mp4', size: '4K', duration: '4:20', category: 'فيديو' },
+        4: { title: 'تعليق صوتي - ساعة رولكس', desc: 'فيديو تعليق صوتي احترافي عن ساعة رولكس الفاخرة.', type: 'video', file: 'تعليق.mp4', size: '4K', duration: '0:30', category: 'تعليق صوتي' },
+        5: { title: 'إعلان سيارة مرسيدس', desc: 'إعلان تجاري لسيارة مرسيدس الفاخرة.', type: 'image', file: 'سياره.jpg', size: '1920x1080', category: 'إعلان' },
+        6: { title: 'صور خطوبة 1', desc: 'صور فوتوغرافية احترافية لحفل خطوبة.', type: 'image', file: 'عرس1.jpg', size: '4000x3000', category: 'تصوير' },
+        7: { title: 'صور خطوبة 2', desc: 'صور فوتوغرافية احترافية لحفل خطوبة.', type: 'image', file: 'عرس2.jpg', size: '6000x4000', category: 'تصوير' },
+        8: { title: 'صور خطوبة 3', desc: 'صور فوتوغرافية احترافية لحفل خطوبة.', type: 'image', file: 'عرس3.jpg', size: '5000x3500', category: 'تصوير' },
+        9: { title: 'صور خطوبة 4', desc: 'صور فوتوغرافية احترافية لحفل خطوبة.', type: 'image', file: 'عرس4.jpg', size: '4500x3000', category: 'تصوير' },
+        10: { title: 'صور خطوبة 5', desc: 'صور فوتوغرافية احترافية لحفل خطوبة.', type: 'image', file: 'عرس5.jpg', size: '5500x4000', category: 'تصوير' }
+    };
+
+    function openDetail(id) {
+        const project = fullData[id];
         if (!project) return;
-        currentProjectId = id;
 
-        const modal = document.getElementById("projectModal");
-        const media = document.getElementById("modalMedia");
-        const title = document.getElementById("modalTitle");
-        const desc = document.getElementById("modalDesc");
+        const modal = document.getElementById('detailModal');
+        const content = document.getElementById('detailContent');
+        const title = document.getElementById('detailTitle');
 
         title.textContent = project.title;
 
-        if (action === "view") {
-          if (project.type === "video") {
-            media.innerHTML = `<video controls autoplay style="width:100%; height:100%; object-fit:cover;">
-                    <source src="${project.file}" type="video/mp4">
-                    متصفحك لا يدعم تشغيل الفيديو
-                </video>`;
-          } else {
-            media.innerHTML = `<img src="${project.file}" alt="${project.title}" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://placehold.co/400x300/e8ddd6/8a5a4a?text=${project.title}'"/>`;
-          }
-          desc.textContent = `🎬 ${project.title}\nنوع الملف: ${project.type === "video" ? "فيديو (MP4)" : "صورة (JPG)"}\nالحجم: ${project.size}${project.duration ? `\nالمدة: ${project.duration}` : ""}`;
+        let mediaHtml = '';
+        if (project.type === 'video') {
+            mediaHtml = `<video controls style="width:100%; height:100%; object-fit:contain;">
+                <source src="${project.file}" type="video/mp4">
+                متصفحك لا يدعم تشغيل الفيديو
+            </video>`;
+        } else if (project.type === 'audio') {
+            mediaHtml = `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#e8ddd6;flex-direction:column;gap:10px;">
+                <i class="fas fa-headphones" style="font-size:4rem;color:#8a5a4a;"></i>
+                <audio controls style="width:80%;">
+                    <source src="${project.file}" type="audio/mp3">
+                    متصفحك لا يدعم تشغيل الصوت
+                </audio>
+            </div>`;
         } else {
-          media.innerHTML = `<i class="fas ${project.icon}" style="font-size:2.5rem; color:#8a5a4a;"></i>`;
-          desc.textContent =
-            project.desc +
-            `\n\n📁 نوع العمل: ${project.type === "video" ? "فيديو" : "صورة"}\n📏 الحجم: ${project.size}${project.duration ? `\n⏱ المدة: ${project.duration}` : ""}\n📅 تاريخ الإنتاج: 2025`;
+            mediaHtml = `<img src="${project.file}" alt="${project.title}" style="width:100%; height:100%; object-fit:contain;" onerror="this.src='https://placehold.co/600x400/e8ddd6/8a5a4a?text=${project.title}'"/>`;
         }
 
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden";
-      }
+        content.innerHTML = `
+            <div class="detail-media">${mediaHtml}</div>
+            <div class="detail-info">
+                <h3>${project.title}</h3>
+                <div class="meta">
+                    <span><i class="fas fa-tag"></i> ${project.category}</span>
+                    <span><i class="fas fa-arrows-alt"></i> ${project.size}</span>
+                    ${project.duration ? `<span><i class="fas fa-clock"></i> ${project.duration}</span>` : ''}
+                </div>
+                <div class="desc">${project.desc}</div>
+            </div>
+            <div class="detail-actions">
+                <button class="btn-detail whatsapp" onclick="sendWhatsAppDetail(${id})"><i class="fab fa-whatsapp"></i> تواصل عبر واتساب</button>
+                <button class="btn-detail" onclick="closeDetail()"><i class="fas fa-arrow-left"></i> العودة</button>
+            </div>
+        `;
 
-      function closeProjectModal() {
-        document.getElementById("projectModal").classList.remove("active");
-        document.body.style.overflow = "";
-        const video = document.querySelector("#modalMedia video");
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDetail() {
+        document.getElementById('detailModal').classList.remove('active');
+        document.body.style.overflow = '';
+        const video = document.querySelector('#detailContent video');
         if (video) video.pause();
-      }
+        const audio = document.querySelector('#detailContent audio');
+        if (audio) audio.pause();
+    }
 
-      function sendWhatsApp() {
-        const project = projectsData[currentProjectId];
-        const msg = `مرحباً VAYLOR، أرغب في الاستفسار عن مشروع: ${project?.title || "أحد مشاريعكم"}`;
-        window.open(
-          `https://wa.me/966555555555?text=${encodeURIComponent(msg)}`,
-          "_blank",
-        );
-      }
+    function sendWhatsAppDetail(id) {
+        const project = fullData[id];
+        const msg = `مرحباً VAYLOR، أرغب في الاستفسار عن مشروع: ${project?.title || 'أحد مشاريعكم'}`;
+        window.open(`https://wa.me/966555555555?text=${encodeURIComponent(msg)}`, '_blank');
+    }
 
-      function submitRequest() {
-        const name = document.getElementById("reqName").value.trim();
-        const email = document.getElementById("reqEmail").value.trim();
-        const phone = document.getElementById("reqPhone").value.trim();
-        const service = document.getElementById("reqService").value;
-        const details = document.getElementById("reqDetails").value.trim();
+    function submitRequest() {
+        const name = document.getElementById('reqName').value.trim();
+        const email = document.getElementById('reqEmail').value.trim();
+        const phone = document.getElementById('reqPhone').value.trim();
+        const service = document.getElementById('reqService').value;
+        const details = document.getElementById('reqDetails').value.trim();
 
         if (!name || !email) {
-          alert("الرجاء تعبئة الاسم والبريد الإلكتروني");
-          return;
+            alert('الرجاء تعبئة الاسم والبريد الإلكتروني');
+            return;
         }
 
-        const msg = `مرحباً VAYLOR، أنا ${name}، أرغب في طلب خدمة: ${service}\nالتفاصيل: ${details || "لا يوجد تفاصيل إضافية"}`;
-        window.open(
-          `https://wa.me/966555555555?text=${encodeURIComponent(msg)}`,
-          "_blank",
-        );
+        const msg = `مرحباً VAYLOR، أنا ${name}، أرغب في طلب خدمة: ${service}\nالتفاصيل: ${details || 'لا يوجد تفاصيل إضافية'}`;
+        window.open(`https://wa.me/966555555555?text=${encodeURIComponent(msg)}`, '_blank');
 
-        document.getElementById("reqName").value = "";
-        document.getElementById("reqEmail").value = "";
-        document.getElementById("reqPhone").value = "";
-        document.getElementById("reqDetails").value = "";
+        document.getElementById('reqName').value = '';
+        document.getElementById('reqEmail').value = '';
+        document.getElementById('reqPhone').value = '';
+        document.getElementById('reqDetails').value = '';
 
         closeSidebarFn();
-      }
+    }
 
-      window.submitRequest = submitRequest;
-      window.viewProject = viewProject;
-      window.closeProjectModal = closeProjectModal;
-      window.sendWhatsApp = sendWhatsApp;
+    window.submitRequest = submitRequest;
+    window.openFullModal = openFullModal;
+    window.closeFullModal = closeFullModal;
+    window.openDetail = openDetail;
+    window.closeDetail = closeDetail;
+    window.sendWhatsAppDetail = sendWhatsAppDetail;
 
-      document.querySelectorAll(".sidebar .nav-links a").forEach((link) => {
-        link.addEventListener("click", closeSidebarFn);
-      });
+    document.querySelectorAll('.sidebar .nav-links a').forEach(link => {
+        link.addEventListener('click', closeSidebarFn);
+    });
 
-      document
-        .getElementById("projectModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) closeProjectModal();
+    document.getElementById('fullModal').addEventListener('click', function(e) {
+        if (e.target === this) closeFullModal();
+    });
+
+    document.getElementById('detailModal').addEventListener('click', function(e) {
+        if (e.target === this) closeDetail();
+    });
+
+    // ===== تحميل الصور =====
+    document.addEventListener('DOMContentLoaded', function() {
+        const imgMap = {
+            'img-ad': 'ad-section.jpg',
+            'img-photo': 'photo-section.jpg',
+            'img-video': 'video-section.jpg',
+            'img-audio': 'audio-section.jpg'
+        };
+
+        Object.keys(imgMap).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                const img = new Image();
+                img.onload = function() {
+                    el.innerHTML = `<img src="${imgMap[id]}" alt="${id}" style="width:100%;height:100%;object-fit:cover;">`;
+                };
+                img.onerror = function() {
+                    // يبقى النص البديل
+                };
+                img.src = imgMap[id];
+            }
         });
-    </script>
-  </body>
+    });
+</script>
+
+</body>
 </html>
